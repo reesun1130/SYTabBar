@@ -4,5 +4,5 @@ SYTabBar，可替代UITabbar，可以实现tabbar的大部分功能，并支持�
 # 使用请看demo
 
 # 效果如下：
- ![image](https://github.com/reesun1130/SYTabBar/blob/master/SYTabBar/sytabbar.PNG)
+ ![image](https://github.com/reesun1130/SYTabBar/blob/master/SYTabBar/sytabbar.png)
 
