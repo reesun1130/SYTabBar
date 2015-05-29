@@ -2,7 +2,7 @@
  * This file is part of the SYTabBar.
  * (c) Ree Sun <ree.sun.cn@hotmail.com || 1507602555@qq.com>
  *
- * For more information, please view SYCore (https://github.com/reesun1130/SYTabBar)
+ * For more information, please view SYTabBar (https://github.com/reesun1130/SYTabBar)
  *
  */
 
@@ -57,6 +57,16 @@
 @property (nonatomic, strong) SYTabBarItem *selectedItem;
 
 /**
+ *  当前选中的item下标
+ */
+@property (nonatomic, readonly) NSUInteger selectedIndex;
+
+/**
+ *  item总数
+ */
+@property (nonatomic, readonly) NSUInteger itemCount;
+
+/**
  *  动态在最后插入item
  *
  *  @param item  要插入的item
@@ -79,6 +89,13 @@
 - (void)insertItem:(SYTabBarItem *)item atIndex:(NSUInteger)index;
 
 /**
+ *  删除之前所有的item，再重新插入新的
+ *
+ *  @param items 要插入的item集合
+ */
+- (void)updateItems:(NSArray *)items;
+
+/**
  *  动态删除item
  *
  *  @param item  要删除的item
@@ -91,11 +108,30 @@
 - (void)removeItemAtIndex:(NSUInteger)index;
 
 /**
+ *  删除所有的item
+ */
+- (void)removeAllItems;
+
+/**
  *  设置选中哪一个item
  *
  *  @param index item下标
  */
 - (void)selectItemAtIndex:(NSUInteger)index;
+
+/**
+ *  取消选中哪一个item
+ *
+ *  @param index item下标
+ */
+- (void)unSelectItemAtIndex:(NSUInteger)index;
+
+/**
+ *  取消选中哪一个item
+ *
+ *  @param item 要取消选中的item
+ */
+- (void)unSelectItem:(SYTabBarItem *)item;
 
 /**
  *  动态设置item 标题

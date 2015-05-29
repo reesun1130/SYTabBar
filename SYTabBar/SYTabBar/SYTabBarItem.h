@@ -2,7 +2,7 @@
  * This file is part of the SYTabBar.
  * (c) Ree Sun <ree.sun.cn@hotmail.com || 1507602555@qq.com>
  *
- * For more information, please view SYCore (https://github.com/reesun1130/SYTabBar)
+ * For more information, please view SYTabBar (https://github.com/reesun1130/SYTabBar)
  *
  */
 
@@ -31,6 +31,16 @@ typedef void(^ItemTitleDidChangeBlock)(SYTabBarItem *item);
 typedef void(^ItemBadgeValueDidChangeBlock)(SYTabBarItem *item);
 
 @interface SYTabBarItem : UIView
+
+/**
+ *  初始化item
+ *
+ *  @param frame           位置、大小
+ *  @param title           显示的内容
+ *
+ *  @return UCTabBarItem
+ */
+- (id)initWithFrame:(CGRect)frame title:(NSString *)title;
 
 /**
 *  初始化item

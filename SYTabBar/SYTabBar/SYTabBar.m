@@ -2,7 +2,7 @@
  * This file is part of the SYTabBar.
  * (c) Ree Sun <ree.sun.cn@hotmail.com || 1507602555@qq.com>
  *
- * For more information, please view SYCore (https://github.com/reesun1130/SYTabBar)
+ * For more information, please view SYTabBar (https://github.com/reesun1130/SYTabBar)
  *
  */
 
@@ -10,6 +10,7 @@
 #import "SYTabBarItem.h"
 
 #define kToolBarTag 2015
+#define kUnselectTag 19881
 
 @interface SYTabBar ()
 {
@@ -17,7 +18,8 @@
     UIView *_vTabContainer;
     
     NSUInteger _previousSelectedIndex;
-    
+    NSUInteger _selectedIndex;
+
     NSMutableArray *_arrItems;
 }
 
@@ -27,6 +29,9 @@
 
 - (id)initWithSYTabBarItems:(NSArray *)items
 {
+    //管理所有item
+    _arrItems = [[NSMutableArray alloc] initWithArray:items];
+    
     SYTabBarItem *barItem = items[0];
     
     _vTabContainer = [[UIView alloc] initWithFrame:CGRectZero];
@@ -53,7 +58,7 @@
         item.blockBadgeValueDidChange = ^(SYTabBarItem *aitem){
             [self adjustTabItems];
         };
-        item.blockBadgeValueDidChange = ^(SYTabBarItem *aitem){
+        item.blockTitleDidChange = ^(SYTabBarItem *aitem){
             [self adjustTabItems];
         };
     }
@@ -76,9 +81,6 @@
         _vTabContainer.userInteractionEnabled = NO;
         [self addSubview:_vTabContainer];
 
-        //管理所有item
-        _arrItems = [[NSMutableArray alloc] initWithArray:items];
-
         //点击事件
         _singleTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTapGesture:)];
         _singleTapGesture.cancelsTouchesInView = NO;
@@ -87,9 +89,7 @@
         [self addGestureRecognizer:_singleTapGesture];
         
         //记录上次选中的index，默认选中第一个item
-        _previousSelectedIndex = 0;
-        _selectedItem = _arrItems[_previousSelectedIndex];
-        [_selectedItem setSelected:YES];
+        _previousSelectedIndex = kUnselectTag;
     }
     return self;
 }
@@ -101,27 +101,6 @@
     
     [self removeGestureRecognizer:_singleTapGesture];
 }
-
-/*- (void)setEnableBlurStyle:(BOOL)enableBlurStyle
-{
-    _enableBlurStyle = enableBlurStyle;
-    
-    if (_enableBlurStyle)
-    {
-        //添加模糊效果
-        AMBlurView *blurView = [[AMBlurView alloc] initWithFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y, self.contentSize.width, self.contentSize.height)];
-        blurView.isEnableBlur = YES;
-        blurView.userInteractionEnabled = NO;//禁止接受触摸事件
-        blurView.tag = kToolBarTag;
-        [self addSubview:blurView];
-        [self sendSubviewToBack:blurView];
-    }
-    else
-    {
-        //移除模糊效果
-        [[self viewWithTag:kToolBarTag] removeFromSuperview];
-    }
-}*/
 
 //是否显示分割线
 - (void)setShowDividingLine:(BOOL)showDividingLine
@@ -251,6 +230,42 @@
     }
 }
 
+- (NSUInteger)selectedIndex
+{
+    return _previousSelectedIndex;
+}
+
+- (void)unSelectItemAtIndex:(NSUInteger)index
+{
+    if (index < _arrItems.count)
+    {
+        SYTabBarItem *item = _arrItems[index];
+        [item setSelected:NO];
+        
+        //记录选中的index及item
+        _previousSelectedIndex = kUnselectTag;
+        
+        if (_selectedItem.tag == item.tag)
+        {
+            _selectedItem = nil;
+        }
+    }
+}
+
+- (void)unSelectItem:(SYTabBarItem *)item
+{
+    if (!item) {
+        return;
+    }
+    
+    [self unSelectItemAtIndex:item.tag];
+}
+
+- (NSUInteger)itemCount
+{
+    return _arrItems ? _arrItems.count : 0;
+}
+
 - (void)setTitle:(NSString *)title atIndex:(NSUInteger)index
 {
     if (index < _arrItems.count)
@@ -334,23 +349,45 @@
     }
 }
 
+- (void)removeAllItems
+{
+    if (_arrItems.count)
+    {
+        [_arrItems makeObjectsPerformSelector:@selector(removeFromSuperview)];
+        [_arrItems removeAllObjects];
+        [self adjustTabItems];
+    }
+}
+
+- (void)updateItems:(NSArray *)items
+{
+    if (items && items.count)
+    {
+        [self removeAllItems];
+        [self addItems:items];
+    }
+}
+
 - (void)adjustTabItems
 {
     NSUInteger count = _arrItems.count;
     
     //调整位置
     CGFloat itemX = 0;
-
-    for (NSUInteger i = 0; i < count; i++)
-    {
-        SYTabBarItem *item = _arrItems[i];
-        item.tag = i;
-        [item setFrame:CGRectMake(itemX, 0, item.frame.size.width, item.frame.size.height)];
-        
-        itemX += item.frame.size.width;
-    }
     
-    ((SYTabBarItem *)[_arrItems lastObject]).showDividingLine = NO;
+    if (count)
+    {
+        for (NSUInteger i = 0; i < count; i++)
+        {
+            SYTabBarItem *item = _arrItems[i];
+            item.tag = i;
+            [item setFrame:CGRectMake(itemX, 0, item.frame.size.width, item.frame.size.height)];
+            
+            itemX += item.frame.size.width;
+        }
+        
+        ((SYTabBarItem *)[_arrItems lastObject]).showDividingLine = NO;
+    }
     
     self.contentSize = CGSizeMake(itemX, self.frame.size.height);
 }

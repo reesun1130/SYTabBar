@@ -120,7 +120,7 @@
 
     UIButton *_btnFilter = [UIButton buttonWithType:UIButtonTypeCustom];
     [_btnFilter setFrame: CGRectMake(CGRectGetMaxX(self.view.frame) - 60, _tabBarB.frame.origin.y, 60, _tabBarB.frame.size.height)];
-    [_btnFilter setTitle:@"筛选" forState:UIControlStateNormal];
+    [_btnFilter setTitle:@"吖吖" forState:UIControlStateNormal];
     [_btnFilter setBackgroundColor:[UIColor clearColor]];
     [_btnFilter setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
     //[_btnFilter setTitleColor:kColorBlue forState:UIControlStateSelected];
@@ -172,8 +172,7 @@
 {
     if (tabBar.tag == kTagA)
     {
-        item.badgeValue = nil;
-        item.badgeValueShow = YES;
+        item.badgeValue = item.tag % 2 == 0 ? @"89" : @"";
         self.labText.text = [NSString stringWithFormat:@"select tabA %ld",(long)item.tag];
     }
     else if (tabBar.tag == kTagB)
