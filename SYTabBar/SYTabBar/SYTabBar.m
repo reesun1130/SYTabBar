@@ -151,7 +151,7 @@
  *
  *  @param location 触摸区域
  *
- *  @return UCTabBarItem
+ *  @return SYTabBarItem
  */
 - (SYTabBarItem *)itemAtTapLocation:(CGPoint)location {
     __block NSInteger index = NSNotFound;
