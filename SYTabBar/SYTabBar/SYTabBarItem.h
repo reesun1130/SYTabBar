@@ -9,8 +9,7 @@
 #import <UIKit/UIKit.h>
 @class SYTabBarItem;
 
-typedef NS_ENUM(NSInteger, SYTabBarItemStyle)
-{
+typedef NS_ENUM(NSInteger, SYTabBarItemStyle) {
     SYTabBarItemStyleNormal = 0,//上图片、下文字
     SYTabBarItemStyleTextOnly,//只显示文字
     SYTabBarItemStyleImageOnly//只显示图片
@@ -113,7 +112,7 @@ typedef void(^ItemBadgeValueDidChangeBlock)(SYTabBarItem *item);
 @property (nonatomic, strong) UIFont *titleFont;
 
 /**
- *  tabbar类型，默认SYTabBarItemStyleNormal
+ *  tabbar类型，默认UCTabBarItemStyleNormal
  */
 @property (nonatomic, readonly) SYTabBarItemStyle style;
 
@@ -121,6 +120,16 @@ typedef void(^ItemBadgeValueDidChangeBlock)(SYTabBarItem *item);
  *  是否显示分隔条
  */
 @property (nonatomic) BOOL showDividingLine;
+
+/**
+ *  文字距离分割线间距，默认10
+ */
+@property (nonatomic) CGFloat hPadding;
+
+/**
+ *  item最小宽度，默认初始化宽度
+ */
+@property (nonatomic) CGFloat minWidth;
 
 /**
  *  是否选中

@@ -54,7 +54,7 @@
 /**
  *  当前选中的item
  */
-@property (nonatomic, strong) SYTabBarItem *selectedItem;
+@property (nonatomic, strong, readonly) SYTabBarItem *selectedItem;
 
 /**
  *  当前选中的item下标
@@ -65,6 +65,15 @@
  *  item总数
  */
 @property (nonatomic, readonly) NSUInteger itemCount;
+
+/**
+ *  返回index所在的item
+ *
+ *  @param index 下标
+ *
+ *  @return item
+ */
+- (SYTabBarItem *)itemAtIndex:(NSUInteger)index;
 
 /**
  *  动态在最后插入item
@@ -134,6 +143,11 @@
 - (void)unSelectItem:(SYTabBarItem *)item;
 
 /**
+ *  取消选中所有的item
+ */
+- (void)unSelectAllItems;
+
+/**
  *  动态设置item 标题
  *
  *  @param title 要设置的标题
@@ -148,5 +162,14 @@
  *  @param index      item下标
  */
 - (void)setBadgeValue:(NSString *)badgeValue atIndex:(NSUInteger)index;
+
+/**
+ *  获取SYTabBarItem为style的下标
+ *
+ *  @param title item标题
+ *
+ *  @return 下标
+ */
+- (NSUInteger)getIndexWithTabBarItemTitle:(NSString *)title;
 
 @end
